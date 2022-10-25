@@ -1,0 +1,31 @@
+version: '3'
+services:
+
+  keycloak:
+    image: jboss/keycloak
+    restart: always
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgresql-primary
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: $DB_PASSWORD
+      KEYCLOAK_FRONTEND_URL: "https://sso.argonaut.network/auth"
+      PROXY_ADDRESS_FORWARDING: "true"
+    networks:
+      - proxy
+      - postgresql-primary-backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak-secure.entrypoints=https"
+      - "traefik.http.routers.keycloak-secure.rule=Host(`sso.argonaut.network`)"
+      - "traefik.http.routers.keycloak-secure.tls=true"
+      - "traefik.docker.network=proxy"
+      
+      - "com.centurylinklabs.watchtower.enable=true"
+
+networks:
+  proxy:
+    external: true
+  postgresql-primary-backend:
+    external: true
