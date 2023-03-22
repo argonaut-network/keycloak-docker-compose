@@ -6,13 +6,12 @@ services:
     restart: always
     environment:
       KC_HEALTH_ENABLED: true
-      KC_DB_VENDOR: POSTGRES
-      KC_DB_ADDR: postgresql-primary
-      KC_DB_DATABASE: keycloak
-      KC_DB_USER: keycloak
+      KC_DB: POSTGRES
+      KC_DB_URL: jdbc:postgresql://postgresql-primary/keycloak
+      KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: $DB_PASSWORD
-      KEYCLOAK_FRONTEND_URL: "https://sso.argonaut.network/auth"
-      PROXY_ADDRESS_FORWARDING: "true"
+      HOSTNAME: "https://sso.argonaut.network/auth"
+      #PROXY_ADDRESS_FORWARDING: "true"
     networks:
       - proxy
       - postgresql-primary-backend
